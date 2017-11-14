@@ -1,15 +1,19 @@
 {
-  "name": "language-abl",
+  "name": "language-openedgeabl",
   "theme": "syntax",
   "version": "0.0.0",
-  "description": "A short description of your syntax theme",
+  "description": "OpenEdge Advanced Business Language, or OpenEdge ABL for short, is a business application development language created and maintained by Progress Software Corporation (PSC).",
   "keywords": [
     "syntax",
-    "theme"
+    "theme",
+    "4gl",
+    "abl",
+    "openedge",
+    "progress"
   ],
   "repository": "https://github.com/atom/progress-abl-syntax",
   "license": "MIT",
   "engines": {
-    "atom": ">=1.0.0 <2.0.0"
+    "atom": ">=1.0.0"
   }
 }
