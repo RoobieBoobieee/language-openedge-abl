@@ -4,6 +4,8 @@ define("inputFile", 'data.csv');
 define("outputFile", '../grammars/language-openedge-abl.json');
 define("regEx_CaseInsensitive", '(?i)');
 
+include('beginEndPatterns.php');
+
 /* csv file to array */
 $data = array_map( function($v) {
     return str_getcsv($v, ";");
@@ -33,6 +35,7 @@ $outputArray["fileTypes"] = [
     "cls",
 ];
 $sortedData = [];
+$sortedData['Type'] = [];
 
 foreach ($data as $key => $value) {
     $foo = &$sortedData[$value['syntax_highlight_type']];
@@ -66,6 +69,14 @@ foreach ($sortedData as $key => $value) {
         break;
     }
     $pattern['match'] = '\b' . regEx_CaseInsensitive . '(' . implode('|', $value).  ')\b';
+    array_push($outputArray["patterns"], $pattern);
+}
+
+foreach ($beginEndPatterns as $key => $value) {
+    $pattern = [];
+    $pattern['name'] = $value['name'];
+    $pattern['begin'] = $value['begin'];
+    $pattern['end'] = $value['end'];
     array_push($outputArray["patterns"], $pattern);
 }
 
