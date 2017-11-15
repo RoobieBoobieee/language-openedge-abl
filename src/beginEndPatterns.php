@@ -17,8 +17,13 @@ $beginEndPatterns = [
         'end' => '}',
     ],
     [
-        'name' => 'comment',
+        'name' => 'block-comment',
         'begin' => '/\\*',
         'end' => '\\*/',
+    ],
+    [
+        'name' => 'comment',
+        'begin' => '&',
+        'end' => '\\n',
     ],
 ];

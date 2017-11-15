@@ -53,11 +53,6 @@ atom-text-editor {
 
 
 // Syntax styles
-
-.syntax--comment {
-  color: @light-gray;
-}
-
 .syntax--keyword {
 
   &.syntax--control {
@@ -137,9 +132,6 @@ atom-text-editor {
 
 .syntax--punctuation {
   &.syntax--definition {
-    &.syntax--comment {
-      color: @light-gray;
-    }
 
     &.syntax--string,
     &.syntax--variable,
@@ -315,4 +307,8 @@ atom-text-editor[mini] .scroll-view {
 
 .syntax--type {
   color: @strong-orange;
+}
+
+.syntax--block-comment {
+  color: @green;
 }
