@@ -6,13 +6,13 @@
     "atom": "*",
     "node": "*"
   },
-  "homepage": "http://atom.github.io/language-xml",
+  "homepage": "http://atom.github.io/language-openedge-abl",
   "repository": {
     "type": "git",
     "url": "https://gitlab.com/RoobieBoobieee/language-openedge-abl.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/atom/language-xml/issues"
+    "url": "https://gitlab.com/RoobieBoobieee/language-openedge-abl/issues"
   }
 }
