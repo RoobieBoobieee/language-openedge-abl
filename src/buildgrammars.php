@@ -1,10 +1,13 @@
 <?php
-$inputFile = 'data.csv';
-$outputFile = '../grammars/language-openedge-abl.json';
+
+define("inputFile", 'data.csv');
+define("outputFile", '../grammars/language-openedge-abl.json');
+define("regEx_CaseInsensitive", '(?i)');
+
 /* csv file to array */
 $data = array_map( function($v) {
     return str_getcsv($v, ";");
-}, file($inputFile));
+}, file(inputFile));
 
 array_walk($data, function(&$a) use ($data) {
     $a = array_combine($data[0], $a);
@@ -62,11 +65,11 @@ foreach ($sortedData as $key => $value) {
             continue;
         break;
     }
-    $pattern['match'] = '\b(' . implode('|', $value).  ')\b';
+    $pattern['match'] = '\b' . regEx_CaseInsensitive . '(' . implode('|', $value).  ')\b';
     array_push($outputArray["patterns"], $pattern);
 }
 
 /* Write to file */
-$fp = fopen($outputFile, 'w');
+$fp = fopen(outputFile, 'w');
 fwrite($fp, json_encode($outputArray));
 fclose($fp);
