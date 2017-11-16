@@ -1,10 +1,10 @@
 <?php
-
 define("inputFile", 'data.csv');
 define("outputFile", '../grammars/language-openedge-abl.json');
 define("regEx_CaseInsensitive", '(?i)');
-define("regEx_BeginOfWord", '(\t|\^|[" "])');
-define("regEx_EndOfWord", '(\t|\n|\r|[" "])');
+define("regEx_Multiline", '(?m)');
+define("regEx_BeginOfWord", '(^|[ \t]+)');
+define("regEx_EndOfWord", '(\n|\r|$|[ \t]+|[ \t]*\.[ \t]*\n)');
 
 include('beginEndPatterns.php');
 
@@ -19,12 +19,6 @@ array_walk($data, function(&$a) use ($data) {
 
 /* Remove column header */
 array_shift($data);
-
-/* Sort by Sytax Type */
-// usort($data, function($a, $b) {
-//     return $a['syntax_highlight_type'] <=> $b['syntax_highlight_type'];
-// });
-/* end csv file to array */
 
 $outputArray = [];
 $outputArray["name"] = "OpenEdge ABL";
@@ -48,31 +42,7 @@ foreach ($data as $key => $value) {
 }
 
 $outputArray["patterns"] = [];
-foreach ($sortedData as $key => $value) {
-    $pattern = [];
-    switch ($key) {
-        case 'Preprocessor':
-            $pattern['name'] = 'preprocessor';
-            break;
-        case 'Keyword':
-            $pattern['name'] = 'keyword';
-            break;
-        case 'Statement':
-            $pattern['name'] = 'statement';
-            break;
-        case 'Type':
-            $pattern['name'] = 'type';
-            break;
-        case 'JumpStatement':
-            $pattern['name'] = 'jumpstatement';
-            break;
-        default:
-            continue;
-        break;
-    }
-    $pattern['match'] = '\b' . regEx_CaseInsensitive . '(' . implode('|', $value).  ')\b';
-    array_push($outputArray["patterns"], $pattern);
-}
+
 
 foreach ($beginEndPatterns as $key => $value) {
     $pattern = [];
@@ -82,7 +52,24 @@ foreach ($beginEndPatterns as $key => $value) {
     array_push($outputArray["patterns"], $pattern);
 }
 
+$pattern[][] = [];
+
+addPattern('decimal', '|', '(\d*\.\d+)');
+addPattern('integer', '|', '(\d+)');
+
+foreach ($sortedData as $key => $value) {
+    addPattern(strtolower($key), implode('|', $value));
+}
+
 /* Write to file */
 $fp = fopen(outputFile, 'w');
 fwrite($fp, json_encode($outputArray));
 fclose($fp);
+
+function addPattern($name, $regex) {
+    global $outputArray;
+    $pattern = [];
+    $pattern['captures']['2']['name'] = $name;
+    $pattern['match'] = regEx_BeginOfWord . $regex . regEx_EndOfWord . regEx_CaseInsensitive . regEx_Multiline;
+    array_push($outputArray["patterns"], $pattern);
+}

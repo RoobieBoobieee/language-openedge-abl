@@ -22,7 +22,7 @@ $beginEndPatterns = [
         'end' => '\\*/',
     ],
     [
-        'name' => 'comment',
+        'name' => 'interpreter',
         'begin' => '&',
         'end' => '\\n',
     ],

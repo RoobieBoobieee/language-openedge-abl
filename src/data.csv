@@ -2686,7 +2686,7 @@ TTCODEPAGE;Option;Keyword
 TYPE-OF;Function;Keyword
 TYPE;Attribute;Keyword
 TypeName;Property;Keyword
-U;Method;Keyword
+:U;Method;Untranslatable
 U1;Event;Keyword
 U10;Event;Keyword
 U2;Event;Keyword
