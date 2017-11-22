@@ -3,13 +3,13 @@
 $beginEndPatterns = [
     [
         'name' => 'quote',
-        'begin' => '\'',
-        'end' => '\'',
+        'begin' => '(?<!~)\'',
+        'end' => '(?<!~)\'',
     ],
     [
         'name' => 'quote',
-        'begin' => '"',
-        'end' => '"',
+        'begin' => '(?<!~)"',
+        'end' => '(?<!~)"',
     ],
     [
         'name' => 'include',
