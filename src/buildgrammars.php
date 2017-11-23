@@ -5,7 +5,9 @@ define("regEx_CaseInsensitive", '(?i)');
 define("regEx_Multiline", '(?m)');
 define("regEx_EscapeChar", '(?<!~)');
 define("regEx_BeginOfWord", '(\t|^|(?<=[ ]))');
-define("regEx_EndOfWord", '(\t|\n|\r|(?=[ ]))');
+define("regEx_EndOfWord", '(\t|\n|\r|(?=[ ])|\.([ ]|\t)*\n)');
+
+
 
 
 include('beginEndPatterns.php');
@@ -59,8 +61,8 @@ foreach ($sortedData as $key => $value) {
     addPattern(strtolower($key), '(' . implode('|', $value) . ')');
 }
 
-addPattern('decimal', '|', '(\d*\.\d+)');
-addPattern('integer', '|', '(\d+)');
+addPattern('integer', '(\d+)');
+addPattern('decimal', '(\d*\.\d+)');
 
 /* Write to file */
 $fp = fopen(outputFile, 'w');
@@ -71,6 +73,6 @@ function addPattern($name, $regex) {
     global $outputArray;
     $pattern = [];
     $pattern['captures']['2']['name'] = $name;
-    $pattern['match'] = regEx_BeginOfWord . $regex . regEx_CaseInsensitive . regEx_Multiline . regEx_EndOfWord;
+    $pattern['match'] = regEx_BeginOfWord . regEx_CaseInsensitive . regEx_Multiline . $regex . regEx_EndOfWord;
     array_push($outputArray["patterns"], $pattern);
 }
