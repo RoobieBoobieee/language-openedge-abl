@@ -1,6 +1,6 @@
 {
   "name": "language-openedge-abl",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "OpenEdge Advanced Business Language, or OpenEdge ABL for short, is a business application development language created and maintained by Progress Software Corporation (PSC).",
   "engines": {
     "atom": "*",
