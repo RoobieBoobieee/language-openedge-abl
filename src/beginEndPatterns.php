@@ -3,13 +3,13 @@
 $beginEndPatterns = [
     [
         'name' => 'quote',
-        'begin' => '\'',
-        'end' => '\'',
+        'begin' => '(?<!~)\'',
+        'end' => '(?<!~)\'',
     ],
     [
         'name' => 'quote',
-        'begin' => '"',
-        'end' => '"',
+        'begin' => '(?<!~)"',
+        'end' => '(?<!~)"',
     ],
     [
         'name' => 'include',
@@ -22,8 +22,8 @@ $beginEndPatterns = [
         'end' => '\\*/',
     ],
     [
-        'name' => 'comment',
-        'begin' => '&',
+        'name' => 'interpreter',
+        'begin' => '^([ ]|\t)*&',
         'end' => '\\n',
     ],
 ];
