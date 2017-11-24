@@ -24,6 +24,6 @@ $beginEndPatterns = [
     [
         'name' => 'interpreter',
         'begin' => '^([ ]|\t)*&',
-        'end' => '\\n',
+        'end' => '(?<!~)\\n',
     ],
 ];

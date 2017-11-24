@@ -1,11 +1,12 @@
 <?php
 define("inputFile", 'data.csv');
 define("outputFile", '../grammars/language-openedge-abl.json');
+define("regEx_Spaces", '([ ]|\t)*');
 define("regEx_CaseInsensitive", '(?i)');
 define("regEx_Multiline", '(?m)');
 define("regEx_EscapeChar", '(?<!~)');
-define("regEx_BeginOfWord", '(\t|^|(?<=[ ]))');
-define("regEx_EndOfWord", '(\t|\n|\r|(?=[ ])|\.([ ]|\t)*\n)');
+define("regEx_BeginOfWord", '\t|^|(?<=[ ])|\(');
+define("regEx_EndOfWord", '\t|\r|(?=[ ])|[\.|:]?' . regEx_Spaces . '\n|\(');
 
 
 
@@ -58,7 +59,30 @@ foreach ($beginEndPatterns as $key => $value) {
 
 $pattern[][] = [];
 foreach ($sortedData as $key => $value) {
-    addPattern(strtolower($key), '(' . implode('|', $value) . ')');
+    $RegexBegin = regEx_BeginOfWord;
+    $RegexEnd = regEx_EndOfWord;
+    switch ($key) {
+        case 'Preprocessor':
+            break;
+        case 'Keyword':
+            break;
+        case 'Statement':
+            break;
+        case 'Type':
+            $RegexEnd = regEx_EndOfWord . "|" . bracketify(regEx_Spaces . "\)");
+            $RegexEnd .= "|" . bracketify(regEx_Spaces . ",");
+            break;
+        case 'JumpStatement':
+            break;
+        case 'Untranslatable':
+            $RegexBegin = regEx_BeginOfWord . "|" . bracketify("\"?");
+            break;
+        default:
+            continue;
+        break;
+    }
+
+    addPattern(strtolower($key), bracketify(implode('|', $value)), $RegexBegin, $RegexEnd);
 }
 
 addPattern('integer', '(\d+)');
@@ -69,10 +93,20 @@ $fp = fopen(outputFile, 'w');
 fwrite($fp, json_encode($outputArray));
 fclose($fp);
 
-function addPattern($name, $regex) {
+function addPattern($name, $regex, $beginRegex = '', $endRegex = '') {
     global $outputArray;
+    if ($beginRegex == '') {
+        $beginRegex =  regEx_BeginOfWord;
+    }
+    if ($endRegex == '') {
+        $endRegex = regEx_EndOfWord;
+    }
     $pattern = [];
     $pattern['captures']['2']['name'] = $name;
-    $pattern['match'] = regEx_BeginOfWord . regEx_CaseInsensitive . regEx_Multiline . $regex . regEx_EndOfWord;
+    $pattern['match'] = sprintf('(%s)%s%s(%s)', $beginRegex, regEx_CaseInsensitive . regEx_Multiline, $regex, $endRegex);
     array_push($outputArray["patterns"], $pattern);
+}
+
+function bracketify($string) {
+    return '(' . $string . ')';
 }

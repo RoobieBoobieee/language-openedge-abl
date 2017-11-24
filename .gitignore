@@ -2,9 +2,6 @@
 npm-debug.log
 node_modules
 
-grammars/*
-!grammars/.gitkeep
-
 *.p
 *.cls
 *.r
