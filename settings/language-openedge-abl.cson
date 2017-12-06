@@ -1,0 +1,9 @@
+'.source.OpenEdgeABL':
+  'editor':
+    'autoIndentOnPaste': false
+    'softTabs': true
+    'tabLength': 2
+    'commentStart': '/* '
+    'commentEnd': ' */'
+    'increaseIndentPattern': '^\\s*(class|if|find|for|method|procedure)\\b.*.\\s*$'
+    'decreaseIndentPattern': '^\\s*(else)\\b.*\\s*$'
