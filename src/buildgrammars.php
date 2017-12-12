@@ -1,12 +1,13 @@
 <?php
 define("inputFile", 'data.csv');
 define("outputFile", '../grammars/language-openedge-abl.json');
-define("regEx_Spaces", '([ ]|\t)*');
+define("regEx_Spaces", '(([ ]|\t)*)');
+define("regEx_Comments", '((/\\*)(.*)(\\*/))');
 define("regEx_CaseInsensitive", '(?i)');
 define("regEx_Multiline", '(?m)');
 define("regEx_EscapeChar", '(?<!~)');
-define("regEx_BeginOfWord", '\t|^|(?<=[ ])|\(');
-define("regEx_EndOfWord", '\t|\r|(?=[ ])|[\.|:]?' . regEx_Spaces . '\n|\(');
+define("regEx_BeginOfWord", '[() ]|^|\b');
+define("regEx_EndOfWord", '[() ]|\n|\.( |\n|\t)');
 
 
 
@@ -67,15 +68,16 @@ foreach ($sortedData as $key => $value) {
         case 'Keyword':
             break;
         case 'Statement':
+            $RegexBegin = $RegexBegin . "|[.:]";
             break;
         case 'Type':
-            $RegexEnd = regEx_EndOfWord . "|" . bracketify(regEx_Spaces . "\)");
-            $RegexEnd .= "|" . bracketify(regEx_Spaces . ",");
+            // $RegexEnd = regEx_EndOfWord . "|" . bracketify(regEx_Spaces . "\)");
+            // $RegexEnd .= "|" . bracketify(regEx_Spaces . ",");
             break;
         case 'JumpStatement':
             break;
         case 'Untranslatable':
-            $RegexBegin = regEx_BeginOfWord . "|" . bracketify("\"?");
+            // $RegexBegin = regEx_BeginOfWord . "|" . bracketify("\"?");
             break;
         default:
             continue;
@@ -85,8 +87,8 @@ foreach ($sortedData as $key => $value) {
     addPattern(strtolower($key), bracketify(implode('|', $value)), $RegexBegin, $RegexEnd);
 }
 
-addPattern('integer', '(\d+)');
-addPattern('decimal', '(\d*\.\d+)');
+addPattern('integer', '(( |\b|\t)\d+( |\n|\t))');
+addPattern('decimal', '(( |\b|\t)\d*\.\d+( |\n|\t))');
 
 /* Write to file */
 $fp = fopen(outputFile, 'w');
@@ -95,15 +97,9 @@ fclose($fp);
 
 function addPattern($name, $regex, $beginRegex = '', $endRegex = '') {
     global $outputArray;
-    if ($beginRegex == '') {
-        $beginRegex =  regEx_BeginOfWord;
-    }
-    if ($endRegex == '') {
-        $endRegex = regEx_EndOfWord;
-    }
     $pattern = [];
     $pattern['captures']['2']['name'] = $name;
-    $pattern['match'] = sprintf('(%s)%s%s(%s)', $beginRegex, regEx_CaseInsensitive . regEx_Multiline, $regex, $endRegex);
+    $pattern['match'] = sprintf('%s(%s)%s(%s)', regEx_CaseInsensitive . regEx_Multiline, $beginRegex, $regex, $endRegex);
     array_push($outputArray["patterns"], $pattern);
 }
 
