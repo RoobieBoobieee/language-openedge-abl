@@ -6,8 +6,8 @@ define("regEx_Comments", '((/\\*)(.*)(\\*/))');
 define("regEx_CaseInsensitive", '(?i)');
 define("regEx_Multiline", '(?m)');
 define("regEx_EscapeChar", '(?<!~)');
-define("regEx_BeginOfWord", '[() ]|^|\b');
-define("regEx_EndOfWord", '[() ]|\n|\.( |\n|\t)');
+define("regEx_BeginOfWord", '[( ]|^|\b');
+define("regEx_EndOfWord", '[)( ,]|\n|\.( |\n|\t)');
 
 
 
@@ -68,7 +68,7 @@ foreach ($sortedData as $key => $value) {
         case 'Keyword':
             break;
         case 'Statement':
-            $RegexBegin = $RegexBegin . "|[.:]";
+            $RegexEnd = $RegexEnd . "|[.:]";
             break;
         case 'Type':
             // $RegexEnd = regEx_EndOfWord . "|" . bracketify(regEx_Spaces . "\)");
